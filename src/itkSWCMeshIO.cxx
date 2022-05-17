@@ -22,10 +22,8 @@
 
 namespace itk
 {
+
 SWCMeshIO ::SWCMeshIO()
-  : m_PartId(NumericTraits<SizeValueType>::max())
-  , m_FirstCellId(NumericTraits<SizeValueType>::OneValue())
-  , m_LastCellId(NumericTraits<SizeValueType>::max())
 {
   this->AddSupportedWriteExtension(".swc");
 }
@@ -33,7 +31,8 @@ SWCMeshIO ::SWCMeshIO()
 SWCMeshIO::~SWCMeshIO() = default;
 
 bool
-SWCMeshIO ::CanReadFile(const char * fileName)
+SWCMeshIO
+::CanReadFile(const char * fileName)
 {
   if (!itksys::SystemTools::FileExists(fileName, true))
   {
@@ -49,7 +48,8 @@ SWCMeshIO ::CanReadFile(const char * fileName)
 }
 
 bool
-SWCMeshIO ::CanWriteFile(const char * fileName)
+SWCMeshIO
+::CanWriteFile(const char * fileName)
 {
   if (itksys::SystemTools::GetFilenameLastExtension(fileName) != ".swc")
   {
@@ -60,63 +60,21 @@ SWCMeshIO ::CanWriteFile(const char * fileName)
 }
 
 void
-SWCMeshIO ::ReadMeshInformation()
+SWCMeshIO
+::ReadMeshInformation()
 {
   // Define input file stream and attach it to input file
   std::ifstream inputFile;
 
   // Due to the windows couldn't work well for tellg() and seekg() for ASCII mode, hence we
   // open the file with std::ios::binary
-  inputFile.open(this->m_FileName.c_str(), std::ios::in | std::ios::binary);
+  inputFile.open(this->m_FileName.c_str(), std::ios::in);
 
   if (!inputFile.is_open())
   {
     itkExceptionMacro(<< "Unable to open input file " << this->m_FileName);
   }
 
-  // Read the ASCII file information
-  unsigned int numberOfParts = 0;
-  unsigned int numberOfConnectivityEntries = 0;
-
-  // Read the number of points and number of cells
-  inputFile >> numberOfParts;
-  inputFile >> this->m_NumberOfPoints;
-  inputFile >> this->m_NumberOfCells;
-  inputFile >> numberOfConnectivityEntries;
-
-  // Determine which part to read, default is to readl all parts
-  if (m_PartId > numberOfParts)
-  {
-    for (unsigned int ii = 0; ii < numberOfParts; ++ii)
-    {
-      inputFile >> m_FirstCellId >> m_LastCellId;
-    }
-
-    m_FirstCellId = 1;
-    m_LastCellId = this->m_NumberOfCells;
-  }
-  else
-  {
-    unsigned int firstId;
-    unsigned int lastId;
-    for (unsigned int ii = 0; ii < m_PartId; ++ii)
-    {
-      inputFile >> firstId >> lastId;
-    }
-
-    inputFile >> m_FirstCellId;
-    inputFile >> m_LastCellId;
-
-    for (unsigned int ii = m_PartId + 1; ii < numberOfParts; ++ii)
-    {
-      inputFile >> firstId >> lastId;
-    }
-  }
-
-  // Determine the start position of points
-  m_FilePosition = inputFile.tellg();
-
-  /** 6. Set default parameters */
   this->m_PointDimension = 3;
   this->m_FileType = IOFileEnum::ASCII;
 
