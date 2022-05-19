@@ -136,6 +136,10 @@ public:
   void
   Write() override;
 
+  using HeaderContentType = std::vector<std::string>;
+  void SetHeaderContent(const HeaderContentType & headerContent);
+  itkGetConstReferenceMacro(HeaderContent, HeaderContentType);
+
   using SampleIdentifierType = int16_t;
   using TypeIdentifierType = uint8_t;
   using RadiusType = double;
@@ -229,6 +233,7 @@ private:
   SizeValueType    m_FirstCellId;
   SizeValueType    m_LastCellId;
 
+  HeaderContentType m_HeaderContent;
   SampleIdentifierContainerType::Pointer m_SampleIdentifiers;
   TypeIdentifierContainerType::Pointer m_TypeIdentifiers;
   RadiusContainerType::Pointer m_Radii;

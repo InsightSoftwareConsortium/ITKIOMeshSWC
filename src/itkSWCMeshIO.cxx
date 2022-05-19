@@ -605,4 +605,15 @@ SWCMeshIO
   return m_ParentIdentifiers;
 }
 
+void
+SWCMeshIO
+::SetHeaderContent(const HeaderContentType & headerContent)
+{
+  m_HeaderContent.resize(headerContent.size());
+  for (size_t ii = 0; ii < headerContent.size(); ++ii)
+  {
+    m_HeaderContent[ii] = headerContent[ii];
+  }
+}
+
 } // namespace itk
