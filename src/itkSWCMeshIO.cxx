@@ -230,7 +230,7 @@ void
 SWCMeshIO
 ::ReadCells(void * buffer)
 {
-  auto *  data = static_cast<unsigned int *>(buffer);
+  auto * data = static_cast<unsigned int *>(buffer);
 
   // Skip root
   const SizeValueType numberOfPoints = this->GetNumberOfPoints();
@@ -250,8 +250,50 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO ::ReadPointData(void * itkNotUsed(buffer))
-{}
+SWCMeshIO
+::ReadPointData(void * buffer)
+{
+  const SizeValueType numberOfPoints = this->GetNumberOfPoints();
+  switch (m_PointDataContent)
+  {
+    case SWCMeshIOEnums::SWCPointData::SampleIdentifier:
+      {
+      auto * data = static_cast<SampleIdentifierType *>(buffer);
+      for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
+      {
+        data[ii] = m_SampleIdentifiers->GetElement(ii);
+      }
+      }
+      break;
+    case SWCMeshIOEnums::SWCPointData::TypeIdentifier:
+      {
+      auto * data = static_cast<TypeIdentifierType *>(buffer);
+      for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
+      {
+        data[ii] = m_TypeIdentifiers->GetElement(ii);
+      }
+      }
+      break;
+    case SWCMeshIOEnums::SWCPointData::Radius:
+      {
+      auto * data = static_cast<RadiusType *>(buffer);
+      for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
+      {
+        data[ii] = m_Radii->GetElement(ii);
+      }
+      }
+      break;
+    case SWCMeshIOEnums::SWCPointData::ParentIdentifier:
+      {
+      auto * data = static_cast<ParentIdentifierType *>(buffer);
+      for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
+      {
+        data[ii] = m_ParentIdentifiers->GetElement(ii);
+      }
+      }
+      break;
+  }
+}
 
 void
 SWCMeshIO ::ReadCellData(void * itkNotUsed(buffer))
