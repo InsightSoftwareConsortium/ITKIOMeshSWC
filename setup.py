@@ -12,7 +12,7 @@ except ImportError:
 
 setup(
     name='itk-iomeshswc',
-    version='0.0.1',
+    version='0.1.0',
     author='Matt McCormick',
     author_email='matt.mccormick@kitware.com',
     packages=['itk'],
@@ -43,6 +43,6 @@ setup(
     keywords='ITK InsightToolkit',
     url=r'https://itk.org/',
     install_requires=[
-        r'itk>=5.3rc3'
+        r'itk>=5.3rc4'
     ]
     )
