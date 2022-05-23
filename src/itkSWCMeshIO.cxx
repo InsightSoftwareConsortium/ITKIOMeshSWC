@@ -337,7 +337,7 @@ SWCMeshIO
 ::WritePoints(void * buffer)
 {
   // Write points
-  switch (this->m_PointPixelComponentType)
+  switch (this->m_PointComponentType)
   {
     case IOComponentEnum::UCHAR:
     {
@@ -535,7 +535,7 @@ SWCMeshIO
 ::WritePointData(void * buffer)
 {
   // Write points
-  switch (this->m_PointComponentType)
+  switch (this->m_PointPixelComponentType)
   {
     case IOComponentEnum::UCHAR:
     {
