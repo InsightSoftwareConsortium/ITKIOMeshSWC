@@ -659,7 +659,7 @@ SWCMeshIO
     }
     else
     {
-      outputFile << ii;
+      outputFile << ii+1;
     }
     outputFile << sep;
 
