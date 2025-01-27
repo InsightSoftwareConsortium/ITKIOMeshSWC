@@ -31,9 +31,9 @@ namespace itk
 {
 
 /** \class SWCMeshIOEnums
- * 
+ *
  * \brief enums for the SWCMeshIO class.
- * 
+ *
  * \ingroup IOMeshSWC
  */
 class SWCMeshIOEnums
@@ -139,7 +139,8 @@ public:
   Write() override;
 
   using HeaderContentType = std::vector<std::string>;
-  void SetHeaderContent(const HeaderContentType & headerContent);
+  void
+  SetHeaderContent(const HeaderContentType & headerContent);
   itkGetConstReferenceMacro(HeaderContent, HeaderContentType);
 
   // using SampleIdentifierType = int16_t;
@@ -158,8 +159,10 @@ public:
   using ParentIdentifierContainerType = VectorContainer<IdentifierType, ParentIdentifierType>;
 
   /** Set/Get the sample identifiers. */
-  void SetSampleIdentifiers(const SampleIdentifierContainerType *);
-  const SampleIdentifierContainerType * GetSampleIdentifiers() const;
+  void
+  SetSampleIdentifiers(const SampleIdentifierContainerType *);
+  const SampleIdentifierContainerType *
+  GetSampleIdentifiers() const;
 
   /** Set/Get the type identifiers.
    *  0 - undefined
@@ -171,17 +174,23 @@ public:
    *  6 - unspecified neurite
    *  7 - glia processes
    */
-  void SetTypeIdentifiers(const TypeIdentifierContainerType *);
-  const TypeIdentifierContainerType * GetTypeIdentifiers() const;
+  void
+  SetTypeIdentifiers(const TypeIdentifierContainerType *);
+  const TypeIdentifierContainerType *
+  GetTypeIdentifiers() const;
 
 
   /** Set/Get the Radius in micrometers (half the node thickness). */
-  void SetRadii(const RadiusContainerType *);
-  const RadiusContainerType * GetRadii() const;
+  void
+  SetRadii(const RadiusContainerType *);
+  const RadiusContainerType *
+  GetRadii() const;
 
   /** Set/Get the parent sample identifiers. */
-  void SetParentIdentifiers(const ParentIdentifierContainerType *);
-  const ParentIdentifierContainerType * GetParentIdentifiers() const;
+  void
+  SetParentIdentifiers(const ParentIdentifierContainerType *);
+  const ParentIdentifierContainerType *
+  GetParentIdentifiers() const;
 
   /** Set/Get the content of the point data on the input/output itk::Mesh. */
   itkGetConstMacro(PointDataContent, SWCMeshIOEnums::SWCPointData);
@@ -213,46 +222,42 @@ protected:
   {
     switch (m_PointDataContent)
     {
-      case SWCMeshIOEnums::SWCPointData::SampleIdentifier:
-        {
+      case SWCMeshIOEnums::SWCPointData::SampleIdentifier: {
         m_SampleIdentifiers->resize(this->GetNumberOfPoints());
 
         for (SizeValueType ii = 0; ii < this->m_NumberOfPoints; ++ii)
         {
           m_SampleIdentifiers->SetElement(ii, static_cast<SampleIdentifierType>(buffer[ii]));
         }
-        }
-        break;
-      case SWCMeshIOEnums::SWCPointData::TypeIdentifier:
-        {
+      }
+      break;
+      case SWCMeshIOEnums::SWCPointData::TypeIdentifier: {
         m_TypeIdentifiers->resize(this->GetNumberOfPoints());
 
         for (SizeValueType ii = 0; ii < this->m_NumberOfPoints; ++ii)
         {
           m_TypeIdentifiers->SetElement(ii, static_cast<TypeIdentifierType>(buffer[ii]));
         }
-        }
-        break;
-      case SWCMeshIOEnums::SWCPointData::Radius:
-        {
+      }
+      break;
+      case SWCMeshIOEnums::SWCPointData::Radius: {
         m_Radii->resize(this->GetNumberOfPoints());
 
         for (SizeValueType ii = 0; ii < this->m_NumberOfPoints; ++ii)
         {
           m_Radii->SetElement(ii, static_cast<RadiusType>(buffer[ii]));
         }
-        }
-        break;
-      case SWCMeshIOEnums::SWCPointData::ParentIdentifier:
-        {
+      }
+      break;
+      case SWCMeshIOEnums::SWCPointData::ParentIdentifier: {
         m_ParentIdentifiers->resize(this->GetNumberOfPoints());
 
         for (SizeValueType ii = 0; ii < this->m_NumberOfPoints; ++ii)
         {
           m_ParentIdentifiers->SetElement(ii, static_cast<ParentIdentifierType>(buffer[ii]));
         }
-        }
-        break;
+      }
+      break;
     }
   }
 
@@ -300,16 +305,16 @@ protected:
   using PointIndexToSampleIdentifierType = std::unordered_map<IdentifierType, SampleIdentifierType>;
 
 private:
-  HeaderContentType m_HeaderContent;
+  HeaderContentType                      m_HeaderContent;
   SampleIdentifierContainerType::Pointer m_SampleIdentifiers;
-  TypeIdentifierContainerType::Pointer m_TypeIdentifiers;
-  RadiusContainerType::Pointer m_Radii;
+  TypeIdentifierContainerType::Pointer   m_TypeIdentifiers;
+  RadiusContainerType::Pointer           m_Radii;
   ParentIdentifierContainerType::Pointer m_ParentIdentifiers;
-  PointsBufferContainerType::Pointer m_PointsBuffer;
-  CellsBufferContainerType::Pointer m_CellsBuffer;
-  SampleIdentifierToPointIndexType m_SampleIdentifierToPointIndex;
-  PointIndexToParentPointIndexType m_PointIndexToParentPointIndex;
-  PointIndexToSampleIdentifierType m_PointIndexToSampleIdentifier;
+  PointsBufferContainerType::Pointer     m_PointsBuffer;
+  CellsBufferContainerType::Pointer      m_CellsBuffer;
+  SampleIdentifierToPointIndexType       m_SampleIdentifierToPointIndex;
+  PointIndexToParentPointIndexType       m_PointIndexToParentPointIndex;
+  PointIndexToSampleIdentifierType       m_PointIndexToSampleIdentifier;
 
   SWCMeshIOEnums::SWCPointData m_PointDataContent{ SWCMeshIOEnums::SWCPointData::TypeIdentifier };
 };
