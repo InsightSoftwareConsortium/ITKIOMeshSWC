@@ -28,7 +28,7 @@ std::ostream &
 operator<<(std::ostream & out, const SWCMeshIOEnums::SWCPointData value)
 {
   return out << [value] {
-    switch(value)
+    switch (value)
     {
       case SWCMeshIOEnums::SWCPointData::SampleIdentifier:
         return "SWCMeshIOEnums::SWCPointData::SampleIdentifier";
@@ -40,13 +40,11 @@ operator<<(std::ostream & out, const SWCMeshIOEnums::SWCPointData value)
         return "SWCMeshIOEnums::SWCPointData::ParentIdentifier";
       default:
         return "INVALID VALUE FOR SWCMeshIOEnums";
-
     }
   }();
 }
 
-SWCMeshIO
-::SWCMeshIO()
+SWCMeshIO ::SWCMeshIO()
 {
   this->AddSupportedWriteExtension(".swc");
 
@@ -64,8 +62,7 @@ SWCMeshIO
 SWCMeshIO::~SWCMeshIO() = default;
 
 bool
-SWCMeshIO
-::CanReadFile(const char * fileName)
+SWCMeshIO ::CanReadFile(const char * fileName)
 {
   if (!itksys::SystemTools::FileExists(fileName, true))
   {
@@ -81,8 +78,7 @@ SWCMeshIO
 }
 
 bool
-SWCMeshIO
-::CanWriteFile(const char * fileName)
+SWCMeshIO ::CanWriteFile(const char * fileName)
 {
   if (itksys::SystemTools::GetFilenameLastExtension(fileName) != ".swc")
   {
@@ -93,8 +89,7 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::ReadMeshInformation()
+SWCMeshIO ::ReadMeshInformation()
 {
   // Define input file stream and attach it to input file
   std::ifstream inputFile;
@@ -119,9 +114,8 @@ SWCMeshIO
     }
     else
     {
-      m_HeaderContent.push_back(line.substr(first+1));
+      m_HeaderContent.push_back(line.substr(first + 1));
     }
-
   }
 
   SizeValueType numberOfPoints = 0;
@@ -218,10 +212,9 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::ReadPoints(void * buffer)
+SWCMeshIO ::ReadPoints(void * buffer)
 {
-  auto * data = static_cast<float *>(buffer);
+  auto *              data = static_cast<float *>(buffer);
   const SizeValueType numberOfValues = this->m_PointDimension * this->GetNumberOfPoints();
   for (SizeValueType ii = 0; ii < numberOfValues; ++ii)
   {
@@ -230,8 +223,7 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::ReadCells(void * buffer)
+SWCMeshIO ::ReadCells(void * buffer)
 {
   auto * data = static_cast<unsigned int *>(buffer);
 
@@ -252,60 +244,57 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::ReadPointData(void * buffer)
+SWCMeshIO ::ReadPointData(void * buffer)
 {
   const SizeValueType numberOfPoints = this->GetNumberOfPoints();
   switch (m_PointDataContent)
   {
     case SWCMeshIOEnums::SWCPointData::SampleIdentifier:
-      {
+    {
       auto * data = static_cast<SampleIdentifierType *>(buffer);
       for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
       {
         data[ii] = m_SampleIdentifiers->GetElement(ii);
       }
-      }
-      break;
+    }
+    break;
     case SWCMeshIOEnums::SWCPointData::TypeIdentifier:
-      {
+    {
       auto * data = static_cast<TypeIdentifierType *>(buffer);
       for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
       {
         data[ii] = m_TypeIdentifiers->GetElement(ii);
       }
-      }
-      break;
+    }
+    break;
     case SWCMeshIOEnums::SWCPointData::Radius:
-      {
+    {
       auto * data = static_cast<RadiusType *>(buffer);
       for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
       {
         data[ii] = m_Radii->GetElement(ii);
       }
-      }
-      break;
+    }
+    break;
     case SWCMeshIOEnums::SWCPointData::ParentIdentifier:
-      {
+    {
       auto * data = static_cast<ParentIdentifierType *>(buffer);
       for (SizeValueType ii = 0; ii < numberOfPoints; ++ii)
       {
         data[ii] = m_ParentIdentifiers->GetElement(ii);
       }
-      }
-      break;
+    }
+    break;
   }
 }
 
 void
-SWCMeshIO
-::ReadCellData(void * itkNotUsed(buffer))
+SWCMeshIO ::ReadCellData(void * itkNotUsed(buffer))
 {}
 
 
 void
-SWCMeshIO
-::WriteMeshInformation()
+SWCMeshIO ::WriteMeshInformation()
 {
   // Check file name
   if (this->m_FileName.empty())
@@ -332,8 +321,7 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::WritePoints(void * buffer)
+SWCMeshIO ::WritePoints(void * buffer)
 {
   // Write points
   switch (this->m_PointComponentType)
@@ -427,7 +415,8 @@ SWCMeshIO
     if (ii < m_SampleIdentifiers->size())
     {
       m_PointIndexToSampleIdentifier[ii] = m_SampleIdentifiers->GetElement(ii);
-    } else
+    }
+    else
     {
       m_PointIndexToSampleIdentifier[ii] = ii;
     }
@@ -435,8 +424,7 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::WriteCells(void * buffer)
+SWCMeshIO ::WriteCells(void * buffer)
 {
   // Check file name
   if (this->m_FileName.empty())
@@ -530,8 +518,7 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::WritePointData(void * buffer)
+SWCMeshIO ::WritePointData(void * buffer)
 {
   // Write points
   switch (this->m_PointPixelComponentType)
@@ -621,13 +608,11 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::WriteCellData(void * itkNotUsed(buffer))
+SWCMeshIO ::WriteCellData(void * itkNotUsed(buffer))
 {}
 
 void
-SWCMeshIO
-::Write()
+SWCMeshIO ::Write()
 {
   if (this->m_FileName.empty())
   {
@@ -644,12 +629,12 @@ SWCMeshIO
                       << this->m_FileName);
   }
 
-  const auto sampleIdentifiersSize = m_SampleIdentifiers->size();
-  const auto typeIdentifiersSize = m_TypeIdentifiers->size();
-  const auto radiiSize = m_Radii->size();
-  const auto parentIdentifiersSize = m_ParentIdentifiers->size();
+  const auto        sampleIdentifiersSize = m_SampleIdentifiers->size();
+  const auto        typeIdentifiersSize = m_TypeIdentifiers->size();
+  const auto        radiiSize = m_Radii->size();
+  const auto        parentIdentifiersSize = m_ParentIdentifiers->size();
   const std::string sep(" ");
-  SizeValueType pointsIndex = itk::NumericTraits<SizeValueType>::ZeroValue();
+  SizeValueType     pointsIndex = itk::NumericTraits<SizeValueType>::ZeroValue();
   for (SizeValueType ii = 0; ii < this->m_NumberOfPoints; ++ii)
   {
     if (ii < sampleIdentifiersSize)
@@ -658,7 +643,7 @@ SWCMeshIO
     }
     else
     {
-      outputFile << ii+1;
+      outputFile << ii + 1;
     }
     outputFile << sep;
 
@@ -704,8 +689,7 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::PrintSelf(std::ostream & os, Indent indent) const
+SWCMeshIO ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
@@ -713,8 +697,7 @@ SWCMeshIO
 }
 
 void
-SWCMeshIO
-::SetSampleIdentifiers(const SampleIdentifierContainerType * sampleIdentifiers)
+SWCMeshIO ::SetSampleIdentifiers(const SampleIdentifierContainerType * sampleIdentifiers)
 {
   const SizeValueType size = sampleIdentifiers->Size();
   m_SampleIdentifiers->resize(size);
@@ -726,15 +709,13 @@ SWCMeshIO
 }
 
 auto
-SWCMeshIO
-::GetSampleIdentifiers() const -> const SampleIdentifierContainerType *
+SWCMeshIO ::GetSampleIdentifiers() const -> const SampleIdentifierContainerType *
 {
   return m_SampleIdentifiers;
 }
 
 void
-SWCMeshIO
-::SetTypeIdentifiers(const TypeIdentifierContainerType * typeIdentifiers)
+SWCMeshIO ::SetTypeIdentifiers(const TypeIdentifierContainerType * typeIdentifiers)
 {
   const SizeValueType size = typeIdentifiers->Size();
   m_TypeIdentifiers->resize(size);
@@ -746,15 +727,13 @@ SWCMeshIO
 }
 
 auto
-SWCMeshIO
-::GetTypeIdentifiers() const -> const TypeIdentifierContainerType *
+SWCMeshIO ::GetTypeIdentifiers() const -> const TypeIdentifierContainerType *
 {
   return m_TypeIdentifiers;
 }
 
 void
-SWCMeshIO
-::SetRadii(const RadiusContainerType * radii)
+SWCMeshIO ::SetRadii(const RadiusContainerType * radii)
 {
   const SizeValueType size = radii->Size();
   m_Radii->resize(size);
@@ -766,15 +745,13 @@ SWCMeshIO
 }
 
 auto
-SWCMeshIO
-::GetRadii() const -> const RadiusContainerType *
+SWCMeshIO ::GetRadii() const -> const RadiusContainerType *
 {
   return m_Radii;
 }
 
 void
-SWCMeshIO
-::SetParentIdentifiers(const ParentIdentifierContainerType * parentIdentifiers)
+SWCMeshIO ::SetParentIdentifiers(const ParentIdentifierContainerType * parentIdentifiers)
 {
   const SizeValueType size = parentIdentifiers->Size();
   m_ParentIdentifiers->resize(size);
@@ -786,15 +763,13 @@ SWCMeshIO
 }
 
 auto
-SWCMeshIO
-::GetParentIdentifiers() const -> const ParentIdentifierContainerType *
+SWCMeshIO ::GetParentIdentifiers() const -> const ParentIdentifierContainerType *
 {
   return m_ParentIdentifiers;
 }
 
 void
-SWCMeshIO
-::SetHeaderContent(const HeaderContentType & headerContent)
+SWCMeshIO ::SetHeaderContent(const HeaderContentType & headerContent)
 {
   m_HeaderContent.resize(headerContent.size());
   for (size_t ii = 0; ii < headerContent.size(); ++ii)

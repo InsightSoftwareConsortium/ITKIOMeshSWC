@@ -53,7 +53,7 @@ SWCMeshIOFactory::GetDescription() const
 // Undocumented API used to register during static initialization.
 // DO NOT CALL DIRECTLY.
 void IOMeshSWC_EXPORT
-     SWCMeshIOFactoryRegister__Private()
+SWCMeshIOFactoryRegister__Private()
 {
   ObjectFactoryBase::RegisterInternalFactoryOnce<SWCMeshIOFactory>();
 }
